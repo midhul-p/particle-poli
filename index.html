@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Optimized Particle Rabbit</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+  const MAX_PARTICLES = 15000;
+  const GAP = 5; // sample every 6 pixels
+  const PARTICLES_SIZE = 2;
+
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const mouse = { x: null, y: null, radius: 100 };
+
+
+  const img = new Image();
+  img.src = 'ss.png'; // Use a colored PNG with transparent background
+  img.crossOrigin = 'anonymous';
+
+  img.onload = () => {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = img.width;
+    tempCanvas.height = img.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCtx.drawImage(img, 0, 0);
+
+    const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
+    const data = imageData.data;
+
+    const offsetX = canvas.width / 2 - img.width / 2;
+    const offsetY = canvas.height / 2 - img.height / 2;
+
+    let count = 0;
+    for (let y = 0; y < img.height; y += GAP) {
+      for (let x = 0; x < img.width; x += GAP) {
+        const index = (y * img.width + x) * 4;
+        const r = data[index];
+        const g = data[index + 1];
+        const b = data[index + 2];
+        const a = data[index + 3];
+
+        if (a > 128 && count < MAX_PARTICLES) {
+          const color = `rgb(${r},${g},${b})`;
+          particles.push(new Particle(x + offsetX, y + offsetY, color));
+          count++;
+        }
+      }
+    }
+
+    animate();
+  };
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.baseX = x;
+      this.baseY = y;
+      this.color = color;
+      this.size = PARTICLES_SIZE;
+      this.density = Math.random() * 30 + 1;
+    }
+
+    draw() {
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    update() {
+      let dx = mouse.x - this.x;
+      let dy = mouse.y - this.y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < mouse.radius) {
+        let angle = Math.atan2(dy, dx);
+        let force = (mouse.radius - distance) / mouse.radius;
+        let fx = Math.cos(angle) * force * this.density;
+        let fy = Math.sin(angle) * force * this.density;
+        this.x -= fx;
+        this.y -= fy;
+      } else {
+        let dx = this.baseX - this.x;
+        let dy = this.baseY - this.y;
+        this.x += dx * 0.05;
+        this.y += dy * 0.05;
+      }
+    }
+  }
+
+  // let fps = 0, lastFrameTime = performance.now();
+
+  // function showFPS() {
+  //   const now = performance.now();
+  //   fps = Math.round(1000 / (now - lastFrameTime));
+  //   lastFrameTime = now;
+
+  //   ctx.fillStyle = "white";
+  //   ctx.font = "14px monospace";
+  //   ctx.fillText(`FPS: ${fps}`, 20, 30);
+  // }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    // showFPS();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // You may want to reload or reposition particles here if needed
+  });
+</script>
+</body>
+</html>
