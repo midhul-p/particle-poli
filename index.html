@@ -5,17 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Optimized Particle Rabbit</title>
   <style>
-    body {
+     body {
       margin: 0;
       overflow: hidden;
-      background-color: black;
+      background: black;
+      color: lime;
+      font-family: monospace;
+      text-align: center;
+      padding: 3rem;
     }
+
     canvas {
       display: block;
+    }
+
+    a {
+      color: cyan;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 1rem 0;
     }
   </style>
 </head>
 <body>
+<h1>🚀 Particle Poli (POLI)</h1>
+<p>The most subatomic meme coin on Solana.</p>
+<p>Buy on Pump.Fun:</p>
+<a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" target="_blank">
+    👉 Click Here to Buy POLI
+</a>
+<p>#ParticlizeTheWorld 🌌</p>
 <canvas id="canvas"></canvas>
 
 <script>
@@ -26,7 +53,7 @@
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight/2;
 
   const particles = [];
   const mouse = { x: null, y: null, radius: 100 };
