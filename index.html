@@ -1,172 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Optimized Particle Rabbit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Particle Poli (POLI)</title>
   <style>
-     body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      overflow: hidden;
-      background: black;
-      color: lime;
-      font-family: monospace;
+      padding: 0;
+    }
+
+    body {
+      background: #000;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00ff99;
       text-align: center;
-      padding: 3rem;
-    }
-
-    canvas {
-      display: block;
-    }
-
-    a {
-      color: cyan;
-      text-decoration: none;
-      font-weight: bold;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 2rem;
     }
 
     h1 {
       font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: fadeIn 1s ease-in-out;
     }
 
     p {
       font-size: 1.2rem;
-      margin: 1rem 0;
+      margin: 0.5rem 0;
+      color: #ccc;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border: 2px solid #00ffff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: inline-block;
+      transition: all 0.3s ease;
+      animation: fadeIn 1.4s ease-in-out;
+    }
+
+    a:hover {
+      background-color: #00ffff;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    canvas {
+      display: block;
+      margin-top: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.4);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
-<h1>🚀 Particle Poli (POLI)</h1>
-<p>The most subatomic meme coin on Solana.</p>
-<p>Buy on Pump.Fun:</p>
-<a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" target="_blank">
-    👉 Click Here to Buy POLI
-</a>
-<p>#ParticlizeTheWorld 🌌</p>
-<canvas id="canvas"></canvas>
+  <h1>🚀 Particle Poli (POLI)</h1>
+  <p>The most subatomic meme coin on Solana.</p>
+  <p>#ParticlizeTheWorld 🌌</p>
+  <a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" target="_blank">
+    👉 Buy POLI on Pump.Fun
+  </a>
 
-<script>
-  const MAX_PARTICLES = 15000;
-  const GAP = 5; // sample every 6 pixels
-  const PARTICLES_SIZE = 2;
+  <canvas id="canvas" width="800" height="400"></canvas>
 
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight/2;
+  <script>
+    const MAX_PARTICLES = 10000;
+    const GAP = 5;
+    const PARTICLES_SIZE = 2;
 
-  const particles = [];
-  const mouse = { x: null, y: null, radius: 100 };
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
+    const particles = [];
+    const mouse = { x: null, y: null, radius: 100 };
 
-  const img = new Image();
-  img.src = 'ss.png'; // Use a colored PNG with transparent background
-  img.crossOrigin = 'anonymous';
+    const img = new Image();
+    img.src = 'ss.png'; // make sure this file exists in the repo root
+    img.crossOrigin = 'anonymous';
 
-  img.onload = () => {
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = img.width;
-    tempCanvas.height = img.height;
-    const tempCtx = tempCanvas.getContext('2d');
-    tempCtx.drawImage(img, 0, 0);
+    img.onload = () => {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.width;
+      tempCanvas.height = img.height;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(img, 0, 0);
 
-    const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
-    const data = imageData.data;
+      const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
+      const data = imageData.data;
 
-    const offsetX = canvas.width / 2 - img.width / 2;
-    const offsetY = canvas.height / 2 - img.height / 2;
+      const offsetX = canvas.width / 2 - img.width / 2;
+      const offsetY = canvas.height / 2 - img.height / 2;
 
-    let count = 0;
-    for (let y = 0; y < img.height; y += GAP) {
-      for (let x = 0; x < img.width; x += GAP) {
-        const index = (y * img.width + x) * 4;
-        const r = data[index];
-        const g = data[index + 1];
-        const b = data[index + 2];
-        const a = data[index + 3];
+      let count = 0;
+      for (let y = 0; y < img.height; y += GAP) {
+        for (let x = 0; x < img.width; x += GAP) {
+          const index = (y * img.width + x) * 4;
+          const r = data[index];
+          const g = data[index + 1];
+          const b = data[index + 2];
+          const a = data[index + 3];
 
-        if (a > 128 && count < MAX_PARTICLES) {
-          const color = `rgb(${r},${g},${b})`;
-          particles.push(new Particle(x + offsetX, y + offsetY, color));
-          count++;
+          if (a > 128 && count < MAX_PARTICLES) {
+            const color = `rgb(${r},${g},${b})`;
+            particles.push(new Particle(x + offsetX, y + offsetY, color));
+            count++;
+          }
+        }
+      }
+
+      animate();
+    };
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.baseX = x;
+        this.baseY = y;
+        this.color = color;
+        this.size = PARTICLES_SIZE;
+        this.density = Math.random() * 30 + 1;
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      update() {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius) {
+          const angle = Math.atan2(dy, dx);
+          const force = (mouse.radius - distance) / mouse.radius;
+          const fx = Math.cos(angle) * force * this.density;
+          const fy = Math.sin(angle) * force * this.density;
+          this.x -= fx;
+          this.y -= fy;
+        } else {
+          const dx = this.baseX - this.x;
+          const dy = this.baseY - this.y;
+          this.x += dx * 0.05;
+          this.y += dy * 0.05;
         }
       }
     }
 
-    animate();
-  };
-
-  class Particle {
-    constructor(x, y, color) {
-      this.x = x;
-      this.y = y;
-      this.baseX = x;
-      this.baseY = y;
-      this.color = color;
-      this.size = PARTICLES_SIZE;
-      this.density = Math.random() * 30 + 1;
-    }
-
-    draw() {
-      ctx.fillStyle = this.color;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    update() {
-      let dx = mouse.x - this.x;
-      let dy = mouse.y - this.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance < mouse.radius) {
-        let angle = Math.atan2(dy, dx);
-        let force = (mouse.radius - distance) / mouse.radius;
-        let fx = Math.cos(angle) * force * this.density;
-        let fy = Math.sin(angle) * force * this.density;
-        this.x -= fx;
-        this.y -= fy;
-      } else {
-        let dx = this.baseX - this.x;
-        let dy = this.baseY - this.y;
-        this.x += dx * 0.05;
-        this.y += dy * 0.05;
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        p.update();
+        p.draw();
       }
+      requestAnimationFrame(animate);
     }
-  }
 
-  // let fps = 0, lastFrameTime = performance.now();
+    window.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
 
-  // function showFPS() {
-  //   const now = performance.now();
-  //   fps = Math.round(1000 / (now - lastFrameTime));
-  //   lastFrameTime = now;
-
-  //   ctx.fillStyle = "white";
-  //   ctx.font = "14px monospace";
-  //   ctx.fillText(`FPS: ${fps}`, 20, 30);
-  // }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let p of particles) {
-      p.update();
-      p.draw();
-    }
-    // showFPS();
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('mousemove', e => {
-    mouse.x = e.x;
-    mouse.y = e.y;
-  });
-
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // You may want to reload or reposition particles here if needed
-  });
-</script>
+    window.addEventListener('resize', () => {
+      canvas.width = 800;
+      canvas.height = 400;
+    });
+  </script>
 </body>
+
 </html>
