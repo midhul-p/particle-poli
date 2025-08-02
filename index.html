@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Particle Poli (POLI)</title>
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" /> -->
   <style>
     * {
       box-sizing: border-box;
@@ -21,9 +21,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
-      padding: 2rem;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
     }
 
     h1 {
@@ -34,7 +35,7 @@
     }
 
     p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin: 0.5rem 0;
       color: #ccc;
       animation: fadeIn 1.2s ease-in-out;
@@ -46,9 +47,9 @@
       font-weight: bold;
       font-size: 1rem;
       border: 2px solid #00ffff;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 8px;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
       display: inline-block;
       transition: all 0.3s ease;
       animation: fadeIn 1.4s ease-in-out;
@@ -62,59 +63,61 @@
       box-shadow: 0 0 20px #00ffff, inset 0 0 10px #000;
     }
 
-.poli-message {
-  background: rgba(0, 255, 204, 0.05);
+    .poli-message {
+      background: rgba(0, 255, 204, 0.07);
+      margin: 2rem 0;
+      padding: 2rem;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 1.5s ease-in-out;
+    }
 
-  margin: 2rem;
-  width: 100%;
-  box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
-  backdrop-filter: blur(10px);
-  animation: fadeIn 1.5s ease-in-out;
-}
+    .poli-message h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #00ffee;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
 
-.poli-message h2 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-  color: #00ffee;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-}
+    .poli-message p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+      color: #d0fdfc;
+    }
 
-.poli-message p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  margin-bottom: 1.2rem;
-  color: #d0fdfc;
-}
+    .buy-button {
+      display: inline-block;
+      font-size: 1rem;
+      padding: 0.7rem 1.5rem;
+      color: #000;
+      background: #00ffff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
 
-.buy-button {
-  display: inline-block;
-  font-size: 1rem;
-  padding: 0.6rem 1.4rem;
-  color: #000;
-  background: #00ffff;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  font-weight: bold;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.buy-button:hover {
-  background: #00e6e6;
-  transform: scale(1.05);
-  color: #000;
-}
+    .buy-button:hover {
+      background: #00e6e6;
+      transform: scale(1.05);
+    }
 
     canvas {
-      position: relative;
-      z-index: 1;
       display: block;
       margin-top: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 30px rgba(0, 255, 153, 0.4);
+
       animation: fadeIn 2s ease-in-out;
-      max-width: 100vw;
+      max-width: 100%;
       height: auto;
+    }
+
+    .image-canvas {
+      box-shadow: 0 0 30px rgba(0, 255, 153, 0.4);
     }
 
     #bg {
@@ -127,13 +130,11 @@
     }
 
     footer {
-      margin-top: 2rem;
+      margin-top: 3rem;
       padding: 1rem;
-      text-align: center;
       font-size: 0.9rem;
       color: #00ffcc;
       text-shadow: 0 0 5px #00ffcc;
-      z-index: 2;
       animation: fadeIn 2.5s ease-in-out;
     }
 
@@ -155,107 +156,109 @@
       }
 
       p {
-        font-size: 0.95rem;
+        font-size: 1rem;
       }
 
-      a {
+      a,
+      .buy-button {
         font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .poli-message h2 {
+        font-size: 1.6rem;
+      }
+
+      .poli-message p {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 
 <body>
-    <h1>🚀 Particle Poli (POLI)</h1>
+  <h1>🚀 Particle Poli (POLI)</h1>
   <p>Even scattered particles when come together, can create a beautiful world.</p>
   <a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" target="_blank">
     👉 Buy POLI on Pump.Fun
   </a>
 
-  <!-- ✨ Added POLI Message Section -->
-<section class="poli-message">
-  <h2>We’re All Just Particles</h2>
-  <p>
-    In a world <strong style="color: orange;">divided by borders, beliefs, race, and caste</strong>  —  
-    we’ve all become particles drifting apart.
-  </p>
-  <p>
-    But POLI believes one thing:  
-    <strong style="color: orange;">Even scattered particles, when they move together, can create a beautiful world.</strong>
-  </p>
-  <p>
-    This isn't just a meme coin. It’s a message.  
-  </p>
-  <a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" class="buy-button" target="_blank">
-    Be the Particle. Join $POLI
-  </a>
-</section>
+  <section class="poli-message">
+    <h2>We’re All Just Particles</h2>
+    <p>In a world <strong style="color: orange;">divided by borders, race, religion, and what not ! </strong> — we’ve
+      all become particles drifting apart.</p>
+    <p>BUT POLI believes one thing: <strong style="color: orange;">Even scattered particles, when they move together,
+        can create a beautiful world.</strong></p>
+    <p>This isn't just a meme coin. It’s a message.</p>
+    <a href="https://pump.fun/coin/9VsJFKgfs5e8AZ9CKgvatwNanxDYDBPuVocaG8g9gySN" class="buy-button" target="_blank">
+      Drift No More. Join the #POLIWorld
+    </a>
+  </section>
 
   <canvas id="bg"></canvas>
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas" class="image-canvas" alt="POLI Particle Canvas"></canvas>
 
   <footer>
-    <p>© 2025 Particle Poli — #ParticlizeTheWorld 🌌</p>
+    <p>© 2025 Particle Poli — #POLIWorld 🌌</p>
   </footer>
   <script>
- // ——— Background Particle Effect ———
-const dpr = window.devicePixelRatio || 1;
-const bgCanvas = document.getElementById('bg');
-const bgCtx    = bgCanvas.getContext('2d');
-const stars    = [];
-const STAR_COUNT = 150;
+    // ——— Background Particle Effect ———
+    const dpr = window.devicePixelRatio || 1;
+    const bgCanvas = document.getElementById('bg');
+    const bgCtx = bgCanvas.getContext('2d');
+    const stars = [];
+    const STAR_COUNT = 150;
 
-function resizeBG() {
-  bgCanvas.width  = window.innerWidth  * dpr;
-  bgCanvas.height = window.innerHeight * dpr;
-  bgCtx.setTransform(1, 0, 0, 1, 0, 0); // reset any prior scaling
-  bgCtx.scale(dpr, dpr);
-}
-resizeBG();
-
-class Star {
-  constructor() {
-    this.reset();
-  }
-  reset() {
-    this.x     = Math.random() * window.innerWidth;
-    this.y     = Math.random() * window.innerHeight;
-    this.size  = Math.random() * 1.5 + 0.2;
-    this.speed = Math.random() * 0.5 + 0.2;
-    this.alpha = Math.random() * 0.5 + 0.3;
-  }
-  update() {
-    this.x -= this.speed;
-    if (this.x < 0) {
-      this.reset();
-      this.x = window.innerWidth;
+    function resizeBG() {
+      bgCanvas.width = window.innerWidth * dpr;
+      bgCanvas.height = window.innerHeight * dpr;
+      bgCtx.setTransform(1, 0, 0, 1, 0, 0); // reset any prior scaling
+      bgCtx.scale(dpr, dpr);
     }
-  }
-  draw() {
-    bgCtx.globalAlpha = this.alpha;
-    bgCtx.beginPath();
-    bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    bgCtx.fillStyle = '#00ffcc';
-    bgCtx.fill();
-  }
-}
+    resizeBG();
 
-for (let i = 0; i < STAR_COUNT; i++) {
-  stars.push(new Star());
-}
+    class Star {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * window.innerHeight;
+        this.size = Math.random() * 1.5 + 0.2;
+        this.speed = Math.random() * 0.5 + 0.2;
+        this.alpha = Math.random() * 0.5 + 0.3;
+      }
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0) {
+          this.reset();
+          this.x = window.innerWidth;
+        }
+      }
+      draw() {
+        bgCtx.globalAlpha = this.alpha;
+        bgCtx.beginPath();
+        bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        bgCtx.fillStyle = '#00ffcc';
+        bgCtx.fill();
+      }
+    }
 
-function animateBG() {
-  bgCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  for (let s of stars) {
-    s.update();
-    s.draw();
-  }
-  requestAnimationFrame(animateBG);
-}
-animateBG();
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push(new Star());
+    }
 
-window.addEventListener('resize', resizeBG);
+    function animateBG() {
+      bgCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      for (let s of stars) {
+        s.update();
+        s.draw();
+      }
+      requestAnimationFrame(animateBG);
+    }
+    animateBG();
+
+    window.addEventListener('resize', resizeBG);
   </script>
 
   <script>
@@ -265,7 +268,7 @@ window.addEventListener('resize', resizeBG);
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    
+
 
     const mouse = { x: null, y: null, radius: 100 };
     const particles = [];
